@@ -3,9 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
+
+
+
+const sequelize = require("./database/connect");
 
 
 var app = express();
+app.use(cors());
+
+
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -17,10 +28,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Import routes
 var testRouter = require("./routes/test_routes");
 var studentRouter = require("./routes/students_routes");
+var teacherRouter = require("./routes/teacher_routes");
+
+// Routes setup
 app.use("/test",testRouter);
-app.use("/student",testRouter)
+app.use("/student",studentRouter)
+app.use("/teacher",teacherRouter)
 
 
 // catch 404 and forward to error handler
